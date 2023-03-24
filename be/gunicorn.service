@@ -1,0 +1,11 @@
+[Unit]
+Description=Gunicorn
+After=network.target
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/Citizen-Feedback-Platform/be
+ExecStart=/home/ubuntu/Citizen-Feedback-Platform/be/venv/bin/gunicorn -b 0.0.0.0:5000 app:app
+Restart=always
+[Install]
+WantedBy=multi-user.target

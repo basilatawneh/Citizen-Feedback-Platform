@@ -27,7 +27,6 @@ class Feedback(Document):
    @classmethod
    def pre_save(cls, sender, document, **kwargs):
       metadata = { 'family': 0, 'health': 0, 'unknown': 0}
-      print("FDSFDSFSDS")
       for item in document.data:
          if(item.age < 25 and cls.contains_word(item.what_bothers_you, 'family')):
             metadata["family"] += 1

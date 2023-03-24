@@ -14,7 +14,7 @@ const useGetStatistics = (option: number) => {
             owner: { ...item.owner[0], id: item.owner[0]._id },
             communityName: item._id,
             data: [
-                { name: 'Family', value: item.famil_total },
+                { name: 'Family', value: item.family_total },
                 { name: 'health', value: item.health_total },
                 { name: 'Unknown', value: item.unknown_total }
             ]

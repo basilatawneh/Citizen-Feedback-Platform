@@ -6,15 +6,26 @@ from flask import Flask, jsonify, request
 from flask_pymongo import PyMongo
 from flask_cors import CORS
 import json
+
+from flask_jwt_extended import create_access_token, JWTManager
 app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb://localhost:27017/Citizen_Feedback_Platform"
+app.config["JWT_SECRET_KEY"] = "super-secret"
 mongodb_client = PyMongo(app)
 CORS(app)
 db = mongodb_client.db
+jwt = JWTManager(app)
+
+
+@app.route("/user", methods=["GET"])
+def get_users():
+    users = User.objects()
+    parsed_users = [user.to_json() for user in users]
+    return jsonify(parsed_users)
 
 
 @app.route("/user", methods=["POST"])
-def add_one():
+def create_user():
     body = request.json
     user = User(
         username=body["username"],
@@ -34,10 +45,15 @@ def login():
     res = {}
     status = 403
     if (user != None):
-        user = json.loads(user.to_json())
+        user = user.to_json()
+        print(user)
         isMatch = User.comapre_passeord(user["password"], body["password"])
         if (isMatch):
-            res = {**user}
+            access_token = create_access_token(
+                identity={**user, 'id': str(user['id'])})
+            print("access")
+            print(access_token)
+            res = {**user, 'access_token': access_token}
             status = 200
         else:
             res = {"message": "Unauthorized user"}
@@ -93,9 +109,11 @@ def creat_feedback():
     return jsonify(success="Sds"), 200
 
 
+@app.route("/feedback/<owner>", methods=["GET"])
 @app.route("/feedback", methods=["GET"])
-def Get_feedback():
-    body = request.json
+def Get_feedback(owner=None):
+    # body = request.json
+    print(owner)
     pipeline = [
         {
             '$lookup': {
@@ -110,12 +128,12 @@ def Get_feedback():
         {
             '$match': {
                 # Filter users with a specific zip code
-                'owner': ObjectId(body["owner"])
-            }
+                'owner': ObjectId(owner)
+            } if owner != None else {}
         },
         {
             '$group': {
-                '_id': '$owner',
+                '_id': '$owner' if (owner != None) else '$community_name',
                 'family_total': {'$sum': '$meta_data.family'},
                 'health_total': {'$sum': '$meta_data.health'},
                 'unknown_total': {'$sum': '$meta_data.unknown'},
@@ -125,7 +143,8 @@ def Get_feedback():
         }
     ]
     data = Feedback.objects.aggregate(*pipeline)
-    result = [{**x, '_id': str(x['_id']), 'owner': [{**y, '_id': str(y['_id'])} for y in x['owner']]} for x in data]
+    result = [{**x, '_id': str(x['_id']), 'owner': [{**y, '_id': str(y['_id'])}
+                                                    for y in x['owner']]} for x in data]
     return jsonify(result), 200
 
 

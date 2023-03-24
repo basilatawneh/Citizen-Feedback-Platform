@@ -20,6 +20,7 @@ class User(Document):
 
    def to_json(self):
       return {
+         'id': str(self.id),
          'username': self.username,
          'password': self.password,
          'full_name': self.full_name,

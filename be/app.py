@@ -5,7 +5,6 @@ from bson.objectid import ObjectId
 from flask import Flask, jsonify, request
 from flask_pymongo import PyMongo
 from flask_cors import CORS
-import json
 
 from flask_jwt_extended import create_access_token, JWTManager
 app = Flask(__name__)
@@ -41,18 +40,14 @@ def create_user():
 def login():
     body = request.json
     user = User.objects(username=body["username"]).first()
-    print(user)
     res = {}
     status = 403
     if (user != None):
         user = user.to_json()
-        print(user)
         isMatch = User.comapre_passeord(user["password"], body["password"])
         if (isMatch):
             access_token = create_access_token(
                 identity={**user, 'id': str(user['id'])})
-            print("access")
-            print(access_token)
             res = {**user, 'access_token': access_token}
             status = 200
         else:
@@ -70,7 +65,6 @@ def create_message():
     message = Messages(
         message=body["message"], sender=body["sender"], reciver=body["reciver"])
     message.save()
-    print(message.to_json())
     return jsonify(message="ss"), 200
 
 
@@ -79,7 +73,6 @@ def get_message(reciver):
     messages = Messages.objects(reciver=reciver)  # .select_related()
     result = []
     for book in messages:
-        print(book.id)
         result.append({
             "id": str(book.id),
             'message': book.message,
@@ -99,11 +92,9 @@ def creat_feedback():
     return jsonify(success="Sds"), 200
 
 
-@app.route("/feedback/<owner>", methods=["GET"])
-@app.route("/feedback", methods=["GET"])
-def Get_feedback(owner=None):
-    # body = request.json
-    print(owner)
+@app.route("/feedback/<allData>/<owner>", methods=["GET"])
+@app.route("/feedback/<allData>", methods=["GET"])
+def Get_feedback(owner=None, allData='false'):
     pipeline = [
         {
             '$lookup': {
@@ -123,7 +114,7 @@ def Get_feedback(owner=None):
         },
         {
             '$group': {
-                '_id': '$owner' if (owner != None) else '$community_name',
+                '_id': None if (allData == 'true') else '$community_name',
                 'family_total': {'$sum': '$meta_data.family'},
                 'health_total': {'$sum': '$meta_data.health'},
                 'unknown_total': {'$sum': '$meta_data.unknown'},

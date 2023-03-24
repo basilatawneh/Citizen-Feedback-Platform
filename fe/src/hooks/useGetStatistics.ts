@@ -4,14 +4,14 @@ import { useAppSelector } from '../app/hooks';
 import { userInfo } from '../store/user.slice';
 import { EUsersTypes } from '../types/user.type';
 
-const useGetStatistics = () => {
+const useGetStatistics = (option: number) => {
     const [statistics, setStatistics] = useState([])
     const userData = useAppSelector(userInfo);
 
     const getData = async () => {
-        const res = await axios.get(`${process.env.REACT_APP_ENDPOINT}/feedback${userData.info.role === EUsersTypes.SOCIAL_WORKER ? '/' + userData.info.id : ''}`)
+        const res = await axios.get(`${process.env.REACT_APP_ENDPOINT}/feedback/${option === 1 ? 'true' : 'false'}${userData.info.role === EUsersTypes.SOCIAL_WORKER ? '/' + userData.info.id : ''}`)
         const finalData = res.data.map((item: any) => ({
-            owner: {...item.owner[0], id: item.owner[0]._id},
+            owner: { ...item.owner[0], id: item.owner[0]._id },
             communityName: item._id,
             data: [
                 { name: 'Family', value: item.famil_total },
@@ -24,7 +24,7 @@ const useGetStatistics = () => {
     }
     useEffect(() => {
         getData()
-    }, [])
+    }, [option])
     return { statistics, setStatistics, getData }
 }
 

@@ -14,6 +14,7 @@ interface IProps {
     userRole: number;
     owner?: IUserInfo;
     communityName?: string;
+    option: number;
 }
 
 function Piechart(props: IProps) {
@@ -70,11 +71,10 @@ function Piechart(props: IProps) {
                     </PieChart>
                 </ResponsiveContainer>
 
-                {props.userRole === EUsersTypes.PUBLIC_OFFICIAL && <div className={classes.messageButton}>
-                    <div className={classes.name}>{props.communityName}</div>
-                    <Button variant="contained" type='submit' onClick={sendMessage}>{isLoading ? <CircularProgress size={24} /> : 'revise data'}</Button>
-                    {/* <textarea placeholder=''></textarea> */}
-                </div>}
+                <div className={classes.messageButton}>
+                    {props.option !== 1 && <div className={classes.name}>{props.communityName}</div>}
+                    {props.option !== 1 && props.userRole === EUsersTypes.PUBLIC_OFFICIAL && <Button variant="contained" type='submit' onClick={sendMessage}>{isLoading ? <CircularProgress size={24} /> : 'revise data'}</Button>}
+                </div>
             </div>
         </div>
     );

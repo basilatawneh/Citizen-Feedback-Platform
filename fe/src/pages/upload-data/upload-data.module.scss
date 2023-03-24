@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // flex-direction: column;
+    .form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        .header {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        .csvUpload {
+            padding-bottom: 20px;
+            padding-left: 25px;
+        }
+        .size, .name {
+            margin-bottom: 20px;
+        }
+    }
+}

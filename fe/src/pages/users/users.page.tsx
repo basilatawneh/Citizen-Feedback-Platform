@@ -7,6 +7,7 @@ import { EUsersTypes, IUserInfo } from '../../types/user.type';
 import useUsers from '../../hooks/useUsers';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { toast } from "react-toastify";
+import Header from '../../components/header/header.component';
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -82,13 +83,14 @@ function User() {
 
   return (
     <div>
+      <Header backPath='/home' header='Users'/>
       <TableContainer component={Paper} className={classes.container}>
         <Table>
-          <TableHead className={classes.tableHead}>
+          <TableHead className={classes.tableHead} >
             <TableRow>
-              <TableCell className={classes.tableCell}>Name</TableCell>
-              <TableCell className={classes.tableCell}>Username</TableCell>
-              <TableCell className={classes.tableCell}>role</TableCell>
+              <TableCell style={{color: "#fff", fontSize: 18}} className={classes.tableCell}>Full name</TableCell>
+              <TableCell style={{color: "#fff", fontSize: 18}} className={classes.tableCell}>Username</TableCell>
+              <TableCell style={{color: "#fff", fontSize: 18}} className={classes.tableCell}>Role</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

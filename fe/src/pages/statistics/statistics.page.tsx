@@ -9,6 +9,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import useGetStatistics from '../../hooks/useGetStatistics';
 import Piechart from '../../components/piechart/piechart.component';
+import Header from '../../components/header/header.component';
 interface IProps { }
 
 const Statisitics = (props: IProps) => {
@@ -16,17 +17,14 @@ const Statisitics = (props: IProps) => {
     const userData = useAppSelector(userInfo);
 
     return (
-        <div className={classes.container}>
-            {
-                statisitics.statistics.map((item: any) => <Piechart data={item.data} owner={item.owner} communityName={item.communityName} userRole={userData.info.role} userId={userData.info.id}/>)
-            }
-                        {
-                statisitics.statistics.map((item: any) => <Piechart data={item.data} owner={item.owner} communityName={item.communityName} userRole={userData.info.role} userId={userData.info.id}/>)
-            }
-                        {
-                statisitics.statistics.map((item: any) => <Piechart data={item.data} owner={item.owner} communityName={item.communityName} userRole={userData.info.role} userId={userData.info.id}/>)
-            }
-        </div>
+        <>
+            <Header backPath='/home' header='Statistics' />
+            <div className={classes.container}>
+                {
+                    statisitics.statistics.map((item: any) => <Piechart data={item.data} owner={item.owner} communityName={item.communityName} userRole={userData.info.role} userId={userData.info.id} />)
+                }
+            </div>
+        </>
     );
 }
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PieChart, Pie, Legend, Cell, ResponsiveContainer } from 'recharts';
 import { EUsersTypes, IUserInfo } from '../../types/user.type';
-import {Button, CircularProgress} from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import classes from './piechart.module.scss'
 import axios from 'axios'
 import { toast } from "react-toastify";
@@ -18,7 +18,6 @@ interface IProps {
 
 function Piechart(props: IProps) {
     const [isLoading, setIsLoading] = useState(false);
-    console.log(props.owner)
     const RADIAN = Math.PI / 180;
 
     const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }: any) => {
@@ -41,12 +40,13 @@ function Piechart(props: IProps) {
             "reciver": props.owner?.id
         }
         const res = await axios.post(`${process.env.REACT_APP_ENDPOINT}/message`, body)
-        if(res.status === 200) {
+        if (res.status === 200) {
             toast.success("Message sent successfuly")
         }
         setIsLoading(false)
 
     }
+    console.log(props.communityName)
     return (
         <div className={classes.container} >
             <div >
@@ -69,7 +69,9 @@ function Piechart(props: IProps) {
                         </Pie>
                     </PieChart>
                 </ResponsiveContainer>
+
                 {props.userRole === EUsersTypes.PUBLIC_OFFICIAL && <div className={classes.messageButton}>
+                    <div className={classes.name}>{props.communityName}</div>
                     <Button variant="contained" type='submit' onClick={sendMessage}>{isLoading ? <CircularProgress size={24} /> : 'revise data'}</Button>
                     {/* <textarea placeholder=''></textarea> */}
                 </div>}

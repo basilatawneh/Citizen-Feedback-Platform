@@ -25,8 +25,8 @@ const theme = createTheme();
 
 const Login = (props: IProps) => {
     const navigate = useNavigate();
-
     const dispatch = useAppDispatch();
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -86,10 +86,6 @@ const Login = (props: IProps) => {
                             id="password"
                             autoComplete="current-password"
                         />
-                        {/* <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        /> */}
                         <Button
                             type="submit"
                             fullWidth

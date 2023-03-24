@@ -12,13 +12,14 @@ const useGetStatistics = () => {
         const res = await axios.get(`${process.env.REACT_APP_ENDPOINT}/feedback${userData.info.role === EUsersTypes.SOCIAL_WORKER ? '/' + userData.info.id : ''}`)
         const finalData = res.data.map((item: any) => ({
             owner: {...item.owner[0], id: item.owner[0]._id},
-            communityName: item.id,
+            communityName: item._id,
             data: [
                 { name: 'Family', value: item.famil_total },
                 { name: 'health', value: item.health_total },
                 { name: 'Unknown', value: item.unknown_total }
             ]
-        }))
+        }));
+
         setStatistics(finalData)
     }
     useEffect(() => {

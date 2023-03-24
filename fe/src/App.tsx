@@ -24,6 +24,8 @@ import UploadData from "./pages/upload-data/upload-data.page";
 import Home from "./pages/home/home.page";
 import Statisitics from "./pages/statistics/statistics.page";
 import Users from "./pages/users/users.page";
+import Messages from "./pages/messages/messages.page";
+
 function App() {
   return (
     <Router>
@@ -35,10 +37,7 @@ function App() {
         <Route path="/upload-data" element={<UploadData />}></Route>
         <Route path="/statistics" element={<Statisitics />}></Route>
         <Route path="/users" element={<Users />}></Route>
-        {/* <Route path="/places" element={<PrivateRoute><Places /></PrivateRoute>}></Route>
-        <Route path="/places/:cityName" element={<PrivateRoute><Place /></PrivateRoute>}></Route>
-        <Route path="/places-list/:cityName" element={<PrivateRoute><PlaceList /></PrivateRoute>}></Route>
-        <Route path="/place-details/:id" element={<PrivateRoute><PlaceDetails /></PrivateRoute>}></Route> */}
+        <Route path="/messages" element={<Messages />}></Route>
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>

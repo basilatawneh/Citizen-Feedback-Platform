@@ -7,6 +7,7 @@ import { isValidCSV, parseCSV } from '../../util/utils';
 import { toast } from "react-toastify";
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import Header from '../../components/header/header.component';
 interface IProps { }
 
 const UploadData = (props: IProps) => {
@@ -62,35 +63,35 @@ const UploadData = (props: IProps) => {
     };
 
     return (
-        <div className={classes.container}>
-            <form className={classes.form} onSubmit={submutHandler}>
-                <div className={classes.header}>Upload Data</div>
-                <div className={classes.csvUpload}> <input type="file" required={true} onChange={handleFileChange} /></div>
-                <TextField
-                    className={classes.name}
-                    value={communityName}
-                    required={true}
-                    onChange={(e) => setCommunityName(e.target.value)}
-                    label="Community Name"
-                    variant="outlined"
-                    name='community_name'
-                />
-                <TextField
-                    className={classes.size}
-                    value={communitySize}
-                    required={true}
-                    type="number"
-                    onChange={(e) => setCommunitySize(parseInt(e.target.value))}
-                    label="Community Size"
-                    variant="outlined"
-                    name='community_size'
-                />
-                <div className={classes.buttons}>
-                    <Button variant="contained" type='submit' onClick={() => navigate("/home")}>Back</Button>
+        <>
+            <Header backPath='/home' header='Upload data' />
+            <div className={classes.container}>
+
+                <form className={classes.form} onSubmit={submutHandler}>
+                    <div className={classes.csvUpload}> <input type="file" required={true} onChange={handleFileChange} /></div>
+                    <TextField
+                        className={classes.name}
+                        value={communityName}
+                        required={true}
+                        onChange={(e) => setCommunityName(e.target.value)}
+                        label="Community Name"
+                        variant="outlined"
+                        name='community_name'
+                    />
+                    <TextField
+                        className={classes.size}
+                        value={communitySize}
+                        required={true}
+                        type="number"
+                        onChange={(e) => setCommunitySize(parseInt(e.target.value))}
+                        label="Community Size"
+                        variant="outlined"
+                        name='community_size'
+                    />
                     <Button variant="contained" type='submit'>Submit</Button>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        </>
     );
 }
 

@@ -74,10 +74,9 @@ def create_message():
     return jsonify(message="ss"), 200
 
 
-@app.route("/message", methods=["GET"])
-def get_message():
-    body = request.json
-    messages = Messages.objects(reciver=body["reciver"])  # .select_related()
+@app.route("/message/<reciver>", methods=["GET"])
+def get_message(reciver):
+    messages = Messages.objects(reciver=reciver)  # .select_related()
     result = []
     for book in messages:
         print(book.id)
@@ -97,15 +96,6 @@ def creat_feedback():
     feedback = Feedback(owner=body["owner"], data=body["data"],
                         community_name=body["community_name"], community_size=body["community_size"])
     feedback.save()
-    # result = []
-    # for book in messages:
-    #     print(book.id)
-    #     result.append({
-    #         "id": str(book.id),
-    #         'message': book.message,
-    #         'sender': book.sender.to_json(),
-    #         'reciver': book.reciver.to_json()
-    #     })
     return jsonify(success="Sds"), 200
 
 
